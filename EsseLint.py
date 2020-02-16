@@ -9,6 +9,8 @@ PACKAGE_PATH = os.path.dirname(__file__)
 COMMAND_PATH = os.path.join(PACKAGE_PATH, 'command.js')
 
 '''
+TODO:
+
 JS:
 - cache limit
 

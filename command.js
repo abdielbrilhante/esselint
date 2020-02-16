@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const net = require('net');
 const path = require('path');
 const { spawn } = require('child_process');

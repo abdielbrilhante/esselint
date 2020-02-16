@@ -1,12 +1,3 @@
-#!/usr/bin/env node
-
-// steps:
-// load eslint module (recursive search, fallback to global)
-// watch for config file changes
-// remove when closed?
-// keep path as key
-// reload on project load?
-
 const net = require('net');
 const fs = require('fs');
 const path = require('path');
@@ -23,9 +14,9 @@ const cache = [];
 
 const matchCachedInstance = (filename) => {
   for (const instance of cache) {
-    const relative = path.relative(instance.path, filename);
+    const relative = path.relative(instance.path.replace('/node_modules/eslint', ''), filename);
     if (relative && !relative.startsWith('..') && !path.isAbsolute(relative)) {
-      return instance.cli;
+      return instance;
     }
   }
 
@@ -52,13 +43,14 @@ const createInstance = (filename) => {
 
   if (eslintPath) {
     const { CLIEngine } = require(eslintPath);
-    cache[eslintPath] = {
+    const instance = {
       path: eslintPath,
       engine: CLIEngine,
       cli: new CLIEngine({ fix: true }),
     };
 
-    return cache[eslintPath];
+    cache.push(instance);
+    return instance;
   }
 };
 
